@@ -6,13 +6,13 @@ import org.example.dto.UserResponseDto;
 import org.example.model.User;
 import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 @RequestMapping("/user")
-@Controller
+@RestController
 public class UserController {
     private final UserService userService;
 
@@ -21,7 +21,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = {"/{userId"})
+    @GetMapping("/{userId")
     public UserResponseDto get(Long userId) {
         User user = userService.getById(userId);
         return mapUserToDto(user);
@@ -34,13 +34,13 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(value = {"/inject"})
+    @GetMapping("/inject")
     public RedirectView insertUsers() {
         userService.add(new User("bob@gmail.com", "BoB"));
         userService.add(new User("alise123@gmail.com", "aliso4ka"));
         userService.add(new User("bchupika@gmail.com", "IamTheBestCoach"));
         userService.add(new User("user@gmail.com", "user"));
-        return new RedirectView("/user/all");
+        return new RedirectView("/user/");
     }
 
     private UserResponseDto mapUserToDto(User user) {
