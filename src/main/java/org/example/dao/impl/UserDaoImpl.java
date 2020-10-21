@@ -1,6 +1,7 @@
 package org.example.dao.impl;
 
 import java.util.List;
+import java.util.Optional;
 import org.example.dao.UserDao;
 import org.example.model.User;
 import org.hibernate.Session;
@@ -17,7 +18,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void add(User user) {
+    public User add(User user) {
         Transaction transaction = null;
         Session session = null;
         try {
@@ -25,6 +26,7 @@ public class UserDaoImpl implements UserDao {
             transaction = session.beginTransaction();
             session.save(user);
             transaction.commit();
+            return user;
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -41,6 +43,13 @@ public class UserDaoImpl implements UserDao {
     public List<User> getAll() {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("FROM User ", User.class).getResultList();
+        }
+    }
+
+    @Override
+    public Optional<User> getById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return Optional.of(session.get(User.class, id));
         }
     }
 }

@@ -4,7 +4,9 @@ import java.util.List;
 import org.example.model.User;
 
 public interface UserService {
-    void add(User user);
+    User add(User user);
 
     List<User> getAll();
+
+    User getById(Long id);
 }
